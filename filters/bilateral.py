@@ -1,6 +1,8 @@
 import math
 import numpy as np
 
+from .utils import pad_image
+
 def G(x, sigma):
     return ((1 / (2 * math.pi * pow(sigma, 2))) *
             math.exp(-(pow(x, 2) / (2 * pow(sigma, 2)))))
@@ -24,18 +26,6 @@ def range_component(region, n, sigma):
             Ii = region[i - center, j - center]
             matrix[i, j] = G(Ii - pixel, sigma)
     return matrix
-
-def pad_image(image, amount):
-    h, w = image.shape                        # height, width
-    nh, nw = h + amount * 2, w + amount * 2   # new values
-    padded = np.zeros([nh, nw])
-    padded[amount:amount + h, amount:amount + w] += image
-    return padded
-
-def unpad_image(image, amount):
-    nh, nw = image.shape
-    h, w = nh - amount * 2, nw - amount * 2
-    return image[amount:amount + h, amount:amount + w]
 
 def filter(image):
     n = int(input())
