@@ -11,10 +11,13 @@ kernels = [
 def normalize(image):
     return ((image - np.min(image)) * 255) / np.max(image)
 
-def filter(image):
-    c = float(input())
-    k = int(input())
-
+def filter(image, c, k):
+    """
+Unsharp mask using the Laplacian Filter
+Arguments:
+    iamge -- input image
+    c     -- scaling factor
+    k     -- kernel to use"""
     n = 3   # kernels are n x n
 
     kernel = kernels[k - 1]
@@ -22,11 +25,17 @@ def filter(image):
     working_area = pad_image(image, math.floor(n / 2))
     filtered = np.empty_like(image)
 
+    # 1. Convolve original image with kernel, storing into `filtered`
     for i in range(image.shape[0]):
         for j in range(image.shape[1]):
             region = working_area[i:i + n, j:j + n]
             filtered[i, j] = np.sum(region * kernel)
 
+    # 2. Scale the filtered image
     filtered = normalize(filtered)
 
-    return normalize(image + filtered * c)
+    # 3. Add the filtered image, multiplied by c, to the original image
+    result = filtered * c + image
+
+    # 4. Scale the final image
+    return normalize(result)

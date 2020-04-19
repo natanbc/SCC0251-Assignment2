@@ -27,10 +27,14 @@ def range_component(region, n, sigma):
             matrix[i, j] = G(Ii - pixel, sigma)
     return matrix
 
-def filter(image):
-    n = int(input())
-    sigma_s = float(input())
-    sigma_r = float(input())
+def filter(image, n, sigma_s, sigma_r):
+    """
+Bilateral Filter
+Arguments:
+    image -- input image
+    n     -- size of the filter
+    σs    -- space variance
+    σr    -- range variance"""
 
     gs = spatial_component(n, sigma_s)
 

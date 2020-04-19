@@ -14,9 +14,14 @@ method = int(input())
 save = int(input())
 
 if method == 1:
-    output_img = bilateral(img)
+    n = int(input())
+    sigma_s = float(input())
+    sigma_r = float(input())
+    output_img = bilateral(img, n, sigma_s, sigma_r)
 elif method == 2:
-    output_img = unsharp(img)
+    c = float(input())
+    k = int(input())
+    output_img = unsharp(img, c, k)
 else:
     raise Exception("Method " + str(method) + " unimplemented")
 
