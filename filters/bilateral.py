@@ -1,0 +1,62 @@
+import math
+import numpy as np
+
+def G(x, sigma):
+    return ((1 / (2 * math.pi * pow(sigma, 2))) *
+            math.exp(-(pow(x, 2) / (2 * pow(sigma, 2)))))
+
+def spatial_component(n, sigma):
+    center = (n - 1) / 2 # index
+    def dist(x, y):
+        return math.sqrt(pow(x - center, 2) + pow(y - center, 2))
+    matrix = np.zeros([n, n])
+    for i in range(n):
+        for j in range(n):
+            matrix[i, j] = G(dist(i, j), sigma)
+    return matrix
+
+def range_component(region, n, sigma):
+    center = int((n - 1) / 2)
+    pixel = region[center, center]
+    matrix = np.zeros([n, n])
+    for i in range(matrix.shape[0]):
+        for j in range(matrix.shape[1]):
+            Ii = region[i - center, j - center]
+            matrix[i, j] = G(Ii - pixel, sigma)
+    return matrix
+
+def pad_image(image, amount):
+    h, w = image.shape                        # height, width
+    nh, nw = h + amount * 2, w + amount * 2   # new values
+    padded = np.zeros([nh, nw])
+    padded[amount:amount + h, amount:amount + w] += image
+    return padded
+
+def unpad_image(image, amount):
+    nh, nw = image.shape
+    h, w = nh - amount * 2, nw - amount * 2
+    return image[amount:amount + h, amount:amount + w]
+
+def filter(image):
+    n = int(input())
+    sigma_s = float(input())
+    sigma_r = float(input())
+
+    gs = spatial_component(n, sigma_s)
+
+    padding_needed = math.floor(n / 2)
+
+    result = np.empty_like(image)
+    working_area = pad_image(image, padding_needed)
+
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            region = working_area[i:i + n, j:j + n]
+            gr = range_component(region, n, sigma_r)
+            w = gr * gs
+            Wp = np.sum(w)
+            If = np.sum(w * region)
+            result[i, j] = If / Wp
+
+    return result
+
