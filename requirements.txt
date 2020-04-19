@@ -1,0 +1,6 @@
+imageio==2.8.0
+jupyter==1.0.0
+jupyter-client==6.0.0
+jupyter-console==6.1.0
+jupyter-core==4.6.3
+numpy==1.18.1
