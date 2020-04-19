@@ -4,11 +4,18 @@ import numpy as np
 from .utils import pad_image
 
 def G(x, sigma):
+    """
+Calculates a gaussian kernel"""
     return ((1 / (2 * math.pi * pow(sigma, 2))) *
             math.exp(-(pow(x, 2) / (2 * pow(sigma, 2)))))
 
 def spatial_component(n, sigma):
-    center = (n - 1) / 2 # index
+    """
+Calculates the spatial gaussian kernel
+Arguments:
+    n     -- filter size
+    sigma -- variance"""
+    center = int((n - 1) / 2) # index
     def dist(x, y):
         return math.sqrt(pow(x - center, 2) + pow(y - center, 2))
     matrix = np.zeros([n, n])
@@ -18,12 +25,18 @@ def spatial_component(n, sigma):
     return matrix
 
 def range_component(region, n, sigma):
+    """
+Calculates the range gaussian kernel of a region of the image
+Arguments:
+    region -- region of the image to use
+    n      -- filter size
+    sigma  -- variance"""
     center = int((n - 1) / 2)
     pixel = region[center, center]
     matrix = np.zeros([n, n])
-    for i in range(matrix.shape[0]):
-        for j in range(matrix.shape[1]):
-            Ii = region[i - center, j - center]
+    for i in range(n):
+        for j in range(n):
+            Ii = region[i, j]
             matrix[i, j] = G(Ii - pixel, sigma)
     return matrix
 
