@@ -25,7 +25,9 @@ elif method == 2:
 else:
     raise Exception("Method " + str(method) + " unimplemented")
 
+output_img = output_img.astype(np.uint8)
+
 print("{0:.4f}".format(RSE(output_img, img)))
 
 if save == 1:
-    imageio.imwrite("output_img.png", output_img.astype(np.uint8))
+    imageio.imwrite("output_img.png", output_img)
