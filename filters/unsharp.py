@@ -9,7 +9,7 @@ kernels = [
 ]
 
 def normalize(image):
-    return ((image - np.min(image)) * 255) / np.max(image)
+    return ((image - np.min(image)) * 255) / (np.max(image) - np.min(image))
 
 def filter(image, c, k):
     """
