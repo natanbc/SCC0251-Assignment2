@@ -6,8 +6,8 @@
 # Semester:		First of 2020
 # Group:
 #	<name>					<nUSP>
-# 	***REMOVED***	***REMOVED***
-#	***REMOVED***	***REMOVED***
+# 	***REMOVED***                       ***REMOVED***
+#	***REMOVED***                       ***REMOVED***
 #
 
 import imageio
